@@ -24,8 +24,10 @@ public class main {
 		}
 		imageWindow window = new imageWindow(image);
 		window.setFPSRate(0);
+		centralModule cmodule = new centralModule();
 		while(true){
 			window.update(image);
+			cmodule.setHSV(altWindow.getFromSliders(), altWindow.getToSliders());
 		}
 
 	}
