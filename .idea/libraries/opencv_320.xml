@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="opencv-320">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/opencv/opencv/bin/bin/opencv-320.jar!/" />
+      <root url="file://$USER_HOME$/opencv/opencv/bin/bin" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/opencv/opencv/bin/bin/opencv-320.jar!/" />
+      <root url="file://$USER_HOME$/opencv/opencv/bin/bin" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/opencv/opencv/bin/bin" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/opencv/opencv/bin/bin" recursive="false" type="SOURCES" />
+  </library>
+</component>
