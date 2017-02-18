@@ -13,7 +13,6 @@ public class imageWindow {
 	private static BufferedImage output;
 	JFrame guiFrame;
 	matCanvas pane;
-	mainWindow window;
 	//UI elements
 
 	JLabel fpsLabel;
