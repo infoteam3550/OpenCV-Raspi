@@ -86,7 +86,7 @@ public class centralModule {
 		m_time = System.nanoTime();
 	}
 
-	public void changeTargetMode(int target) {
+	public void setTargetMode(int target) {
 		m_targetMode = target;
 	}
 
@@ -96,43 +96,40 @@ public class centralModule {
 
 	public void runTarget(boolean liveMode)
 	{
-
-
 		if (liveMode) m_targetStop = true;
-		do {
-			switch (m_targetMode) {
-				case (DEBUG_TARGET) : {
-					//TODO	Montre l'image et mets le masque HSV 
-					targetDebug();
-					break;
-				}
-				case (CROCHET_GEAR) : {
-					//TODO trouver le centre de deux blob vertical
-					crochetGear();
-					break;
-				}
-				case (HIGH_GOAL): {
-					//TODO trouver le centre de deux blob horizontal
-					highGoal();
-					break;
-				}
-				case (GEAR_TERRE): {
-					//TODO trouver le centre d'un blob par terre
-					gearTerre();
-					break;
-				}
-				case (BALLE_TERRE): {
-					//TODO trouver le centre d'un blob plus petit
-					balleTerre();
-					break;
-				}
-				default : {
-					//TODO Send log about this error
-					Log("[runTarget] invalid target mode, change with ''changeTargetMode''",2);
-				}
+
+		switch (m_targetMode) {
+			case (DEBUG_TARGET) : {
+				//TODO	Montre l'image et mets le masque HSV
+				targetDebug();
+				break;
 			}
-		} while(m_targetStop);
-		m_targetStop = false;
+			case (CROCHET_GEAR) : {
+				//TODO trouver le centre de deux blob vertical
+				crochetGear();
+				break;
+			}
+			case (HIGH_GOAL): {
+				//TODO trouver le centre de deux blob horizontal
+				highGoal();
+				break;
+			}
+			case (GEAR_TERRE): {
+				//TODO trouver le centre d'un blob par terre
+				gearTerre();
+				break;
+			}
+			case (BALLE_TERRE): {
+				//TODO trouver le centre d'un blob plus petit
+				balleTerre();
+				break;
+			}
+			default : {
+				//TODO Send log about this error
+				Log("[runTarget] invalid target mode, change with ''changeTargetMode''",2);
+			}
+		}
+
 	}
 
 	public void stopTarget () {
