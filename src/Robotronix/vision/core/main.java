@@ -5,6 +5,8 @@ import org.opencv.imgcodecs.*;
 
 public class main {
 
+	public static boolean willRequestImage;
+
 	public static void main(String[] args) {
 		System.out.println(System.getProperty("java.library.path"));
 
@@ -24,8 +26,14 @@ public class main {
 		}
 		imageWindow window = new imageWindow(image);
 		window.setFPSRate(0);
+		centralModule cmodule = new centralModule();
+		willRequestImage = false;
 		while(true){
+			if(window.isLive() | window.getUpdateStatus()) willRequestImage = true;
 			window.update(image);
+			cmodule.setHSV(altWindow.getFromSliders(), altWindow.getToSliders());
+			cmodule.setTargetMode(cmodule.DEBUG_TARGET);
+			if(willRequestImage) cmodule.runTarget(true);
 		}
 
 	}

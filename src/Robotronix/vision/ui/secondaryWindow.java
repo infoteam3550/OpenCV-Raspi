@@ -16,10 +16,10 @@ public class secondaryWindow extends JFrame {
         m_Pane.panel1.setVisible(true);
         this.setVisible(true);
     }
-    Scalar getFromSliders(){
+    public Scalar getFromSliders(){
         return m_Pane.getFromSliderValues();
     }
-    Scalar getToSliders(){
+    public Scalar getToSliders(){
         return m_Pane.getToSliderValues();
     }
     boolean isActivated(){

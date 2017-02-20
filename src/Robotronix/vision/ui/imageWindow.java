@@ -13,7 +13,6 @@ import org.opencv.core.Mat;
 	private static BufferedImage output;
 	JFrame guiFrame;
 	matCanvas pane;
-	mainWindow window;
 	//UI elements
 
 	JLabel fpsLabel;
@@ -24,6 +23,8 @@ import org.opencv.core.Mat;
 	JCheckBox centerToggle;
 	JCheckBox positionToggle;
 	JCheckBox rotatedRectToggle;
+
+	boolean m_updateRequested;
 
 	public static BufferedImage createBufferedImage(Mat mat) {
 		BufferedImage image = new BufferedImage(mat.width(), mat.height(), BufferedImage.TYPE_3BYTE_BGR);
@@ -93,9 +94,13 @@ import org.opencv.core.Mat;
 		refreshButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				//Run code to request refresh
+				m_updateRequested = true;
 			}
 		});
+	}
+	public boolean getUpdateStatus(){
+		m_updateRequested = false;
+		return m_updateRequested;
 	}
 	//Getters et settters des elements de l'UI
 	public void setFPSRate(int fpsRate){
