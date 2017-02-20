@@ -23,7 +23,7 @@ public class secondaryPane {
     private JLabel saturationTo;
     private JLabel valueTo;
     private JSlider expostionSlider;
-    private JCheckBox activerContrôleCheckBox;
+    private JCheckBox activerControleCheckBox;
     private JRadioButton mode1RadioButton;
     private JRadioButton mode2RadioButton;
 
@@ -38,7 +38,7 @@ public class secondaryPane {
     }
 
     boolean isControlActivated() {
-        return activerContrôleCheckBox.isSelected();
+        return activerControleCheckBox.isSelected();
     }
 
     double getExpostionValue() {
@@ -185,13 +185,13 @@ public class secondaryPane {
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.VERTICAL;
         panel1.add(spacer1, gbc);
-        activerContrôleCheckBox = new JCheckBox();
-        activerContrôleCheckBox.setText("Activer contrôle");
+        activerControleCheckBox = new JCheckBox();
+        activerControleCheckBox.setText("Activer contrôle");
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
-        panel1.add(activerContrôleCheckBox, gbc);
+        panel1.add(activerControleCheckBox, gbc);
         final JPanel spacer2 = new JPanel();
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
