@@ -26,7 +26,7 @@ public class secondaryWindow extends JFrame {
         return m_Pane.isControlActivated();
     }
     double getExpoValue(){
-        return m_Pane.getExpostionValue();
+        return m_Pane.getExpositionValue();
     }
     int getMode(){
         return m_Pane.getMode();
