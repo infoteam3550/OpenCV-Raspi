@@ -26,6 +26,24 @@ public class centralModule {
 	public int m_degree;
 	public int m_targetMode;
 	public boolean m_targetStop;
+<<<<<<< HEAD
+	
+	public int m_minH;
+	public int m_minS;
+	public int m_minV;
+	public int m_maxH;
+	public int m_maxS;
+	public int m_maxV;
+	
+	public int m_exposition;
+	public int m_contraste;
+	
+	public int m_tailleMin;
+	
+	public Logger m_logger;
+	public FileHandler m_fh;
+	
+=======
 
 	Scalar m_minHSV;
 	Scalar m_maxHSV;
@@ -38,6 +56,7 @@ public class centralModule {
 	public Logger m_logger;
 	public FileHandler m_fh;
 
+>>>>>>> refs/remotes/origin/master
 	VideoCapture m_camera;
 	double m_time;
 	Mat m_srcImage;
@@ -45,6 +64,127 @@ public class centralModule {
 	Mat m_hsvOverlay;
 	double m_timeSinceLastUpdate;
 	//start of functions
+<<<<<<< HEAD
+	
+	public centralModule() {
+		//Code initialisation
+		
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		
+		m_degree = 0;
+		m_targetMode = 0;
+		m_targetStop = false;
+		
+		m_minH = 0;
+		m_minS = 0;
+		m_minV = 0;
+		m_maxH = 0;
+		m_maxS = 0;
+		m_maxV = 0;
+		
+		m_exposition = 0;
+		m_contraste = 0;
+		
+		m_tailleMin = 0;
+		
+		createLog();
+		
+		//OpenCV initialisation
+		m_camera = new VideoCapture(0);
+		m_camera.open(0);
+	    if(!m_camera.isOpened()){
+	        Log("Camera Error",2);
+	    }
+	    else{
+	        Log("Camera OK!",1);
+	    }
+	    m_camera.set(Videoio.CAP_PROP_FRAME_COUNT, 30);
+	    
+	    m_srcImage = new Mat();
+	    m_camera.read(m_srcImage);
+		
+	    m_hsvImage = Mat.zeros(m_srcImage.size(), 0);
+		
+		m_hsvOverlay = new Mat(3,3,0);
+		
+		//m_camera.read(m_hsvOverlay);
+		
+		m_time = System.nanoTime();
+	}
+	
+	public void setTargetMode(int target) {
+		m_targetMode = target;
+	}
+	
+	public int getTargetMode() {
+		return m_targetMode;
+	}
+	
+	public void runTarget(boolean liveMode) 
+	{
+		
+		
+		if (liveMode) m_targetStop = true;
+		do {
+			switch (m_targetMode) {
+				case (DEBUG_TARGET) : {
+					//TODO	Montre l'image et mets le masque HSV 
+					targetDebug();
+					break;
+				}
+				case (CROCHET_GEAR) : { 
+					//TODO trouver le centre de deux blob vertical
+					crochetGear();
+					break;
+				}
+				case (HIGH_GOAL): {
+					//TODO trouver le centre de deux blob horizontal
+					highGoal();
+					break;
+				}
+				case (GEAR_TERRE): {
+					//TODO trouver le centre d'un blob par terre
+					gearTerre();
+					break;
+				}
+				case (BALLE_TERRE): {
+					//TODO trouver le centre d'un blob plus petit
+					balleTerre();
+					break;
+				}
+				default : {
+					//TODO Send log about this error
+					Log("[runTarget] invalid target mode, change with ''changeTargetMode''",2);
+				}
+			}
+		} while(m_targetStop);
+		m_targetStop = false;
+	}
+	
+	public void stopTarget () {
+		m_targetStop = false;
+	}
+	
+	public int getTargetResult() {
+		return m_degree;
+	}
+	
+	public void setHSV (int minH,int minS,int minV,int maxH,int maxS,int maxV) { // for masking
+		m_minH = minH;
+		m_minS = minS;
+		m_minV = minV;
+		
+		m_maxH = maxH;
+		m_maxS = maxS;
+		m_maxV = maxV;
+	}
+	
+	public int[] getHSV() {
+		int[] HSVReturn = {m_minH,m_minS,m_minV,m_maxH,m_maxS,m_maxV};
+		return HSVReturn;
+	}	
+	
+=======
 
 	public centralModule() {
 		//Code initialisation
@@ -157,24 +297,49 @@ public class centralModule {
 		return m_maxHSV;
 	}
 
+>>>>>>> refs/remotes/origin/master
 	public void setCamParam (int exposition, int contraste) { // for changing the image found
 		m_exposition = exposition;
 		m_contraste = contraste;
 	}
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> refs/remotes/origin/master
 	public int[] getCamParam() {
 		int[] camParam = {m_exposition,m_contraste};
 		return camParam;
 	}
+<<<<<<< HEAD
+	
+	public void setContourParam (int tailleMin) { // for blob finding
+		m_tailleMin = tailleMin;
+	}
+	
+=======
 
 	public void setContourParam (int tailleMin) { // for blob finding
 		m_tailleMin = tailleMin;
 	}
 
+>>>>>>> refs/remotes/origin/master
 	public int[] getContourParam() {
 		int[] contourParam = {m_tailleMin};
 		return contourParam;
 	}
+<<<<<<< HEAD
+	
+	
+	//TargetCodes?
+	public void targetDebug() 
+	{
+		Log("[runTarget] targetDebug started",1);
+		
+		m_time = System.nanoTime() / 1000000;
+		m_camera.read(m_srcImage);
+		
+=======
 
 
 	//TargetCodes?
@@ -185,6 +350,7 @@ public class centralModule {
 		m_time = System.nanoTime() / 1000000;
 		m_camera.read(m_srcImage);
 
+>>>>>>> refs/remotes/origin/master
 		//Imgproc.blur(srcImage, srcImage, new Size(3, 3));
 		
 		/*
@@ -200,11 +366,19 @@ public class centralModule {
 		 * Param1 = source, Param2 = 3 valeur minimum HSV, Param3 = 3 valeur maximum HSV, Param 4 = destination
 		 *
 		 */
+<<<<<<< HEAD
+		Core.inRange(m_hsvImage, new Scalar(m_minH,m_minS,m_minV) , new Scalar(m_maxH,m_maxS,m_maxV), m_hsvOverlay); // Valeur pour le tape
+		
+		//Core.multiply(m_hsvOverlay, new Scalar(0.75, 0.75, 0.75), m_hsvOverlay);
+		//Core.multiply(m_hsvOverlay, new Scalar(0.3, 1, 1), m_hsvOverlay);
+		
+=======
 		Core.inRange(m_hsvImage, m_minHSV , m_maxHSV, m_hsvOverlay); // Valeur pour le tape
 
 		//Core.multiply(m_hsvOverlay, new Scalar(0.75, 0.75, 0.75), m_hsvOverlay);
 		//Core.multiply(m_hsvOverlay, new Scalar(0.3, 1, 1), m_hsvOverlay);
 
+>>>>>>> refs/remotes/origin/master
 		//Nous allons utiliser le maintenant inutile hsvImage comme Mat de swap...
 		Imgproc.cvtColor(m_hsvOverlay, m_hsvImage, Imgproc.COLOR_GRAY2BGR);
 		
@@ -215,6 +389,24 @@ public class centralModule {
 		 */
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		Imgproc.findContours(m_hsvOverlay, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+<<<<<<< HEAD
+		
+		//Core.multiply(srcImage, new Scalar(0,0,0), srcImage);
+		
+		//Appliquer le masque...
+		
+		//Imgproc.cvtColor(m_hsvOverlay, m_hsvOverlay, Imgproc.COLOR_GRAY2BGR);
+		//Core.bitwise_and(srcImage, m_hsvOverlay, srcImage);
+		
+		List<MatOfInt> convexhulls = new ArrayList<MatOfInt>(contours.size());
+		List<Double> orientations = new ArrayList<Double>();
+//		//Dessiner les rectangles
+		for (int i = 0; i < contours.size(); i++) 
+		{
+//			//Trier les contours qui ont une bounding box
+			convexhulls.add(i, new MatOfInt(6));
+			if (Imgproc.contourArea(contours.get(i)) > 2000) 
+=======
 
 		//Core.multiply(srcImage, new Scalar(0,0,0), srcImage);
 
@@ -231,6 +423,7 @@ public class centralModule {
 //			//Trier les contours qui ont une bounding box
 			convexhulls.add(i, new MatOfInt(6));
 			if (Imgproc.contourArea(contours.get(i)) > 2000)
+>>>>>>> refs/remotes/origin/master
 			{
 				Imgproc.convexHull(contours.get(i), convexhulls.get(i));
 				double contourSolidity = Imgproc.contourArea(contours.get(i))/Imgproc.contourArea(convexhulls.get(i));
@@ -238,12 +431,21 @@ public class centralModule {
 				MatOfPoint2f points = new MatOfPoint2f(contours.get(i).toArray());
 				RotatedRect rRect = Imgproc.minAreaRect(points);
 
+<<<<<<< HEAD
+			    Point[] vertices = new Point[4];  
+			    rRect.points(vertices);  
+			    for (int j = 0; j < 4; j++) //Dessiner un rectangle avec rotation..
+			    { 
+			    	Imgproc.line(m_srcImage, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0), 10);
+			    }
+=======
 				Point[] vertices = new Point[4];
 				rRect.points(vertices);
 				for (int j = 0; j < 4; j++) //Dessiner un rectangle avec rotation..
 				{
 					Imgproc.line(m_srcImage, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0), 10);
 				}
+>>>>>>> refs/remotes/origin/master
 				orientations.add(3.0);
 				System.out.println(contourSolidity);
 			}
@@ -257,24 +459,57 @@ public class centralModule {
 		//this is a test code
 		m_degree = 20;
 	}
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> refs/remotes/origin/master
 	public void highGoal() {
 		Log("[runTarget] highGoal started",1);
 		//this is a test code
 		m_degree = 30;
 	}
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> refs/remotes/origin/master
 	public void gearTerre() {
 		Log("[runTarget] gearTerre started",1);
 		//this is a test code
 		m_degree = 40;
 	}
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> refs/remotes/origin/master
 	public void balleTerre() {
 		Log("[runTarget] balleTerre started",1);
 		//this is a test code
 		m_degree = 50;
 	}
+<<<<<<< HEAD
+	
+	
+	///		[Category] Logging
+	public void createLog() { //utiliser lors de l'initialisation
+		m_logger = Logger.getLogger("MyLog");    
+		try {
+	        // This block configure the logger with handler and formatter  
+	        //fh = new FileHandler("$HOME/JavaCodeTest/Log.log");  
+	        m_fh = new FileHandler("./log.log");
+	    	m_logger.addHandler(m_fh);
+	        SimpleFormatter formatter = new SimpleFormatter();  
+	        m_fh.setFormatter(formatter);
+	        m_logger.setLevel(Level.FINE);
+		}catch (IOException e) {  
+	        e.printStackTrace();  
+	    }
+		Log("Log created succefully", 1);
+	}
+	
+=======
 
 
 	///		[Category] Logging
@@ -294,11 +529,45 @@ public class centralModule {
 		Log("Log created succefully", 1);
 	}
 
+>>>>>>> refs/remotes/origin/master
 	/**
 	 * <p>A log creator using java.util.logging</p>
 	 * @param toLog <B>:</B> the text to log
 	 * @param Level <B>:</B> what level you want: <p><b>0</b> for fine <p><b>1</b> for info (pups-up in console)</p><p><B>2</B> for warning</p><p><b>3</b> for severe/crashing</p>
 	 */
+<<<<<<< HEAD
+	public void Log(String toLog, int Level ) { 
+	
+
+	    try {  
+
+	        // the following statement is used to log any messages  
+	        switch (Level) {
+	        	case (0): {
+	    	        m_logger.fine(toLog);
+	    	        break;
+	        	}
+	        	case (1) : {
+	        		m_logger.info(toLog);
+	        		break;
+	        	}
+	        	case (2) : {
+	        		m_logger.warning(toLog);
+	        		break;
+	        	}
+	        	case (3) : {
+	        		m_logger.severe(toLog);
+	        		break;
+	        	}
+	        }  
+
+	    } catch (SecurityException e) {  
+	        e.printStackTrace();  
+	    } 
+		
+	}
+	
+=======
 	public void Log(String toLog, int Level ) {
 
 
@@ -330,5 +599,6 @@ public class centralModule {
 
 	}
 
+>>>>>>> refs/remotes/origin/master
 
 }

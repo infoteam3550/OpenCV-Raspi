@@ -9,7 +9,7 @@ import java.awt.image.WritableRaster;
 import javax.swing.*;
 
 import org.opencv.core.Mat;
-public class imageWindow {
+ public class imageWindow {
 	private static BufferedImage output;
 	JFrame guiFrame;
 	matCanvas pane;
