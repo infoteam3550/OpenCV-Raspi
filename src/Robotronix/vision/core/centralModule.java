@@ -27,11 +27,13 @@ public class centralModule {
 	public int m_targetMode;
 	public boolean m_targetStop;
 
+	public float currentFPS;
+
 	Scalar m_minHSV;
 	Scalar m_maxHSV;
 
-	public int m_exposition;
-	public int m_contraste;
+	public double m_exposition;
+	public double m_contraste;
 
 	public int m_tailleMin;
 
@@ -56,16 +58,17 @@ public class centralModule {
 		m_minHSV = new Scalar(0, 0, 0);
 		m_maxHSV = new Scalar(255, 255, 255);
 
-		m_exposition = 0;
-		m_contraste = 0;
+		m_exposition = 20;
+		m_contraste = 20;
 
 		m_tailleMin = 0;
 
 		createLog();
 
 		//OpenCV initialisation
-		m_camera = new VideoCapture(0);
-		m_camera.open(0);
+		m_camera = new VideoCapture(1);
+		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
+		m_camera.open(1);
 		if(!m_camera.isOpened()){
 			m_logger.severe("Camera Error");
 		}
@@ -92,6 +95,10 @@ public class centralModule {
 
 	public int getTargetMode() {
 		return m_targetMode;
+	}
+
+	public Mat getSrcImage(){
+		return m_srcImage;
 	}
 
 	public void runTarget(boolean liveMode)
@@ -160,12 +167,12 @@ public class centralModule {
 		m_exposition = exposition;
 		m_contraste = contraste;
 	}
-
-	public int[] getCamParam() {
-		int[] camParam = {m_exposition,m_contraste};
-		return camParam;
+	public void setExposure(double exposure){
+		m_exposition = exposure;
 	}
-
+	public void setContrast(double contrast){
+		m_contraste = contrast;
+	}
 	public void setContourParam (int tailleMin) { // for blob finding
 		m_tailleMin = tailleMin;
 	}
@@ -180,11 +187,14 @@ public class centralModule {
 	//TargetCodes?
 	public void targetDebug()
 	{
-		m_logger.info("[runTarget] targetDebug started");
+		//This function is ran at every single frame, which means that it floods the log.
+		//m_logger.info("[runTarget] targetDebug started");
 
-		m_time = System.nanoTime() / 1000000;
+		m_time = System.nanoTime();
+		m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
 		m_camera.read(m_srcImage);
-
+		//Utiliser une image disque pour le debogage
+		//m_srcImage = Imgcodecs.imread("/home/sysgen/image.JPG");
 		//Imgproc.blur(srcImage, srcImage, new Size(3, 3));
 		
 		/*
@@ -233,7 +243,7 @@ public class centralModule {
 			if (Imgproc.contourArea(contours.get(i)) > 2000)
 			{
 				Imgproc.convexHull(contours.get(i), convexhulls.get(i));
-				double contourSolidity = Imgproc.contourArea(contours.get(i))/Imgproc.contourArea(convexhulls.get(i));
+				//double contourSolidity = Imgproc.contourArea(contours.get(i))/Imgproc.contourArea(convexhulls.get(i));
 				Imgproc.drawContours(m_srcImage, contours, i, new Scalar(255, 255, 255), -1);
 				MatOfPoint2f points = new MatOfPoint2f(contours.get(i).toArray());
 				RotatedRect rRect = Imgproc.minAreaRect(points);
@@ -245,11 +255,18 @@ public class centralModule {
 					Imgproc.line(m_srcImage, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0), 10);
 				}
 				orientations.add(3.0);
-				System.out.println(contourSolidity);
+				//System.out.println(contourSolidity);
 			}
 		}
+		//m_srcImage = m_hsvOverlay;
+		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
+		m_logger.info(""+currentFPS);
 		//this is a test code
 		m_degree = 10;
+	}
+
+	public float getFPS(){
+		return currentFPS;
 	}
 
 	public void crochetGear() {
@@ -279,11 +296,11 @@ public class centralModule {
 
 	///		[Category] Logging
 	public void createLog() { //utiliser lors de l'initialisation
-		m_logger = Logger.getLogger("MyLog");
+		m_logger = Logger.getLogger("rbtxVisionLog");
 		try {
 			// This block configure the logger with handler and formatter
 			//fh = new FileHandler("$HOME/JavaCodeTest/Log.log");
-			m_fh = new FileHandler("./log.log");
+			m_fh = new FileHandler("./vision.log");
 			m_logger.addHandler(m_fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			m_fh.setFormatter(formatter);

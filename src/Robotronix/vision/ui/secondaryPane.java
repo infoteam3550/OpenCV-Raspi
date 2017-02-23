@@ -4,9 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import org.opencv.core.*;
 
-/**
- * Created by sysgen on 02/02/17.
- */
 public class secondaryPane {
 
     public JPanel panel1;

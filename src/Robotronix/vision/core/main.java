@@ -14,7 +14,7 @@ public class main {
 
 		// TODO Auto-generated method stub
 		secondaryWindow altWindow = new secondaryWindow();
-		Mat image = Imgcodecs.imread("/home/sysgen/image.png");
+		Mat image = Imgcodecs.imread("/home/sysgen/image.JPG");
 		if(image.height() == 0){
 			System.out.println("Image load fail");
 		}
@@ -32,8 +32,12 @@ public class main {
 			if(window.isLive() | window.getUpdateStatus()) willRequestImage = true;
 			window.update(image);
 			cmodule.setHSV(altWindow.getFromSliders(), altWindow.getToSliders());
+			cmodule.setContrast(altWindow.getExpoValue());
 			cmodule.setTargetMode(cmodule.DEBUG_TARGET);
-			if(willRequestImage) cmodule.runTarget(true);
+			if(willRequestImage)
+				cmodule.runTarget(true);
+			image = cmodule.getSrcImage();
+			window.setFPSRate((int)(cmodule.getFPS()));
 		}
 
 	}

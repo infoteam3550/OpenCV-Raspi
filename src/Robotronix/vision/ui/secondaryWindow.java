@@ -22,13 +22,13 @@ public class secondaryWindow extends JFrame {
     public Scalar getToSliders(){
         return m_Pane.getToSliderValues();
     }
-    boolean isActivated(){
+    public boolean isActivated(){
         return m_Pane.isControlActivated();
     }
-    double getExpoValue(){
+    public double getExpoValue(){
         return m_Pane.getExpositionValue();
     }
-    int getMode(){
+    public int getMode(){
         return m_Pane.getMode();
     }
 }
