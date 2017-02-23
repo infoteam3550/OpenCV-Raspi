@@ -12,11 +12,12 @@ import java.util.logging.SimpleFormatter;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.*;
 import org.opencv.imgproc.*;
+import org.opencv.video.Video;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
 public class centralModule {
-	//setup constance
+	//setup constants
 	public static final int DEBUG_TARGET = 0;
 	public static final int CROCHET_GEAR = 1;
 	public static final int HIGH_GOAL = 2;
@@ -46,6 +47,8 @@ public class centralModule {
 	Mat m_hsvImage;
 	Mat m_hsvOverlay;
 	double m_timeSinceLastUpdate;
+
+	public int cameraPort = 0;
 	//start of functions
 
 	public centralModule() {
@@ -66,9 +69,16 @@ public class centralModule {
 		createLog();
 
 		//OpenCV initialisation
-		m_camera = new VideoCapture(1);
+		for(int device = 0; device<10; device++)
+		{
+			VideoCapture tempCam = new VideoCapture();
+			if (tempCam.isOpened())
+				cameraPort = device;
+		}
+
+		m_camera = new VideoCapture(cameraPort);
 		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
-		m_camera.open(1);
+		m_camera.open(cameraPort);
 		if(!m_camera.isOpened()){
 			m_logger.severe("Camera Error");
 		}
