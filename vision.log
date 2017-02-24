@@ -1,0 +1,18 @@
+Feb 18, 2017 5:11:03 PM Robotronix.vision.core.centralModule createLog
+INFO: Log created successfully
+Feb 18, 2017 5:11:03 PM Robotronix.vision.core.centralModule <init>
+SEVERE: Camera Error
+Feb 18, 2017 5:11:04 PM Robotronix.vision.core.mainVision main
+INFO: Image load sucess
+Feb 18, 2017 5:11:04 PM Robotronix.vision.core.mainVision main
+INFO: X = 800
+Feb 18, 2017 5:11:04 PM Robotronix.vision.core.mainVision main
+INFO: Y = 600
+Feb 18, 2017 5:11:04 PM Robotronix.vision.core.mainVision main
+INFO: Channels: 3
+Feb 18, 2017 5:11:05 PM Robotronix.vision.core.mainVision main
+INFO: Initilisation complete
+Feb 18, 2017 5:11:05 PM Robotronix.vision.core.mainVision main
+INFO: ---------------------------
+Feb 18, 2017 5:11:05 PM Robotronix.vision.core.mainVision main
+INFO: Working

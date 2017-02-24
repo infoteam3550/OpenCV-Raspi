@@ -38,7 +38,7 @@ public class centralModule {
 
 	public int m_tailleMin;
 
-	public Logger m_logger;
+	public Logger m_log;
 	public FileHandler m_fh;
 
 	VideoCapture m_camera;
@@ -80,10 +80,10 @@ public class centralModule {
 		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
 		m_camera.open(cameraPort);
 		if(!m_camera.isOpened()){
-			m_logger.severe("Camera Error");
+			m_log.severe("Camera Error");
 		}
 		else{
-			m_logger.info("Camera OK!");
+			m_log.info("Camera OK!");
 		}
 		m_camera.set(Videoio.CAP_PROP_FRAME_COUNT, 30);
 
@@ -142,7 +142,7 @@ public class centralModule {
 				break;
 			}
 			default : {
-				m_logger.severe("[runTarget] invalid target mode, change with ''changeTargetMode''");
+				m_log.severe("[runTarget] invalid target mode, change with ''changeTargetMode''");
 			}
 		}
 
@@ -270,7 +270,7 @@ public class centralModule {
 		}
 		//m_srcImage = m_hsvOverlay;
 		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
-		m_logger.info(""+currentFPS);
+		m_log.info(""+currentFPS);
 		//this is a test code
 		m_degree = 10;
 	}
@@ -280,25 +280,25 @@ public class centralModule {
 	}
 
 	public void crochetGear() {
-		m_logger.fine("[runTarget] crochetGear started");
+		m_log.fine("[runTarget] crochetGear started");
 		//this is a test code
 		m_degree = 20;
 	}
 
 	public void highGoal() {
-		m_logger.info("[runTarget] highGoal started");
+		m_log.info("[runTarget] highGoal started");
 		//this is a test code
 		m_degree = 30;
 	}
 
 	public void gearTerre() {
-		m_logger.info("[runTarget] gearTerre started");
+		m_log.info("[runTarget] gearTerre started");
 		//this is a test code
 		m_degree = 40;
 	}
 
 	public void balleTerre() {
-		m_logger.info("[runTarget] balleTerre started");
+		m_log.info("[runTarget] balleTerre started");
 		//this is a test code
 		m_degree = 50;
 	}
@@ -306,23 +306,23 @@ public class centralModule {
 
 	///		[Category] Logging
 	public void createLog() { //utiliser lors de l'initialisation
-		m_logger = Logger.getLogger("rbtxVisionLog");
+		m_log = Logger.getLogger("rbtxVisionLog");
 		try {
 			// This block configure the logger with handler and formatter
 			//fh = new FileHandler("$HOME/JavaCodeTest/Log.log");
 			m_fh = new FileHandler("./vision.log");
-			m_logger.addHandler(m_fh);
+			m_log.addHandler(m_fh);
 			SimpleFormatter formatter = new SimpleFormatter();
 			m_fh.setFormatter(formatter);
-			m_logger.setLevel(Level.INFO);
+			m_log.setLevel(Level.INFO);
 		}
 		catch (IOException e) 
         {
 			e.printStackTrace();
 		}
-        m_logger.info("Log created successfully");
+        m_log.info("Log created successfully");
         
-    }
+	}
 }
 	
 
