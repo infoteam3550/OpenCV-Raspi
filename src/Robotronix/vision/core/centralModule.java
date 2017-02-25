@@ -158,7 +158,6 @@ public class centralModule {
 
 	public void setHSV (int minH,int minS,int minV,int maxH,int maxS,int maxV) { // for masking
 		m_minHSV = new Scalar(minH, minS, minV);
-
 		m_minHSV = new Scalar(maxH, maxS, maxV);
 	}
 	public void setHSV (Scalar min, Scalar max) {
@@ -166,10 +165,10 @@ public class centralModule {
 		m_maxHSV = max;
 	}
 
-	public Scalar getFromHSV(){
+	public Scalar getMinHSV(){
 		return m_minHSV;
 	}
-	public Scalar getToHSV(){
+	public Scalar getMaxHSV(){
 		return m_maxHSV;
 	}
 

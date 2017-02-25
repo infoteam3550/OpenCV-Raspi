@@ -33,6 +33,18 @@ public class secondaryPane {
         return new Scalar(hue2Slider.getValue(), saturation2Slider.getValue(),
                 value2Slider.getValue());
     }
+    
+    public void setFromSliderValues(Scalar minValues) {
+    	hue1Slider.setValue((int)(minValues.val[0]));
+    	saturation1Slider.setValue((int)(minValues.val[1]));
+    	value1Slider.setValue((int)(minValues.val[2]));
+    }
+    
+    public void setToSliderValues(Scalar maxValues) {
+    	hue2Slider.setValue((int)(maxValues.val[0]));
+    	saturation2Slider.setValue((int)(maxValues.val[1]));
+    	value2Slider.setValue((int)(maxValues.val[2]));
+    }
 
     public boolean isControlActivated() {
         return activerControleCheckBox.isSelected();
