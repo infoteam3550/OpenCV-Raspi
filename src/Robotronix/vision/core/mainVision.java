@@ -16,16 +16,23 @@ public class mainVision {
 		
 		preferencesAPI prefs = new preferencesAPI();
 		
+		///Prefs key initisation
 		int minH = Integer.parseInt(prefs.initKey("minH", "80"));
 		int minS = Integer.parseInt(prefs.initKey("minS", "100"));
 		int minV = Integer.parseInt(prefs.initKey("minV", "100"));
 		int maxH = Integer.parseInt(prefs.initKey("maxH", "90"));
 		int maxS = Integer.parseInt(prefs.initKey("maxS", "255"));
 		int maxV = Integer.parseInt(prefs.initKey("maxV", "255"));
+		int Target = Integer.parseInt(prefs.initKey("Target", "0"));
+		double CAMexposition = Double.parseDouble(prefs.initKey("exposition", "20"));
+		double CAMcontraste = Double.parseDouble(prefs.initKey("contrast", "20"));
+		int contourTmin = Integer.parseInt(prefs.initKey("contourTmin", "0"));
+		//End of section
+		
 		
 		centralModule cmodule = new centralModule();
 		
-		cmodule.setHSV(minH, minS, minV, maxH, maxS, maxV);
+		cmodule.setHSV(minH, minS, minV, maxH, maxS, maxV); //set value from prefs
 		
 		secondaryWindow altWindow = new secondaryWindow();
 		Mat image = Imgcodecs.imread("/home/pi/image.JPG");
@@ -41,8 +48,12 @@ public class mainVision {
 		imageWindow window = new imageWindow(image);
 		window.setFPSRate(0);
 		
+		//set values from prefs
 		altWindow.setFromSliders(cmodule.getMinHSV());
 		altWindow.setToSliders(cmodule.getMaxHSV());
+		cmodule.setTargetMode(Target);
+		cmodule.setCamParam(CAMcontraste,CAMexposition);
+		cmodule.setContourParam(contourTmin);
 		
 		cmodule.m_log.info("Initilisation complete");
 		cmodule.m_log.info("---------------------------");
@@ -68,5 +79,6 @@ public class mainVision {
 		}
 
 	}
+	
 	
 }

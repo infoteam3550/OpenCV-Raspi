@@ -172,7 +172,7 @@ public class centralModule {
 		return m_maxHSV;
 	}
 
-	public void setCamParam (int exposition, int contraste) { // for changing the image found
+	public void setCamParam (double exposition, double contraste) { // for changing the image found
 		m_exposition = exposition;
 		m_contraste = contraste;
 	}
