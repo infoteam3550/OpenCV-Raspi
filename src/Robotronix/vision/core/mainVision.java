@@ -23,10 +23,10 @@ public class mainVision {
 		int maxH = Integer.parseInt(prefs.initKey("maxH", "90"));
 		int maxS = Integer.parseInt(prefs.initKey("maxS", "255"));
 		int maxV = Integer.parseInt(prefs.initKey("maxV", "255"));
-		int Target = Integer.parseInt(prefs.initKey("Target", "0"));
+		int targetMode = Integer.parseInt(prefs.initKey("targetMode", "0"));
 		double CAMexposition = Double.parseDouble(prefs.initKey("exposition", "20"));
 		double CAMcontraste = Double.parseDouble(prefs.initKey("contrast", "20"));
-		int contourTmin = Integer.parseInt(prefs.initKey("contourTmin", "0"));
+		int contourTailleMin = Integer.parseInt(prefs.initKey("contourTailleMin", "0"));
 		//End of section
 		
 		
@@ -51,9 +51,9 @@ public class mainVision {
 		//set values from prefs
 		altWindow.setFromSliders(cmodule.getMinHSV());
 		altWindow.setToSliders(cmodule.getMaxHSV());
-		cmodule.setTargetMode(Target);
+		cmodule.setTargetMode(targetMode);
 		cmodule.setCamParam(CAMcontraste,CAMexposition);
-		cmodule.setContourParam(contourTmin);
+		cmodule.setContourParam(contourTailleMin);
 		
 		cmodule.m_log.info("Initilisation complete");
 		cmodule.m_log.info("---------------------------");
