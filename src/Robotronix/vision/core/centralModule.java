@@ -378,6 +378,9 @@ public class centralModule {
 		m_TargetCenter_X = (float)biggestRect.center.x;
 		m_TargetCenter_Y = (float)biggestRect.center.y;
 		
+		//Draw crosshair
+		Imgproc.line(m_srcImage, new Point(m_TargetCenter_X, m_TargetCenter_Y - 50), new Point(m_TargetCenter_X, m_TargetCenter_Y + 50), new Scalar(255,0,0), 2);
+		Imgproc.line(m_srcImage, new Point(m_TargetCenter_X - 50, m_TargetCenter_Y), new Point(m_TargetCenter_X+50, m_TargetCenter_Y), new Scalar(255,0,0), 2);
 		m_imageTargetCenter_X = m_TargetCenter_X - CENTRE_IMAGE_X;
 		m_imageTargetCenter_Y = m_TargetCenter_Y - CENTRE_IMAGE_Y;
 		

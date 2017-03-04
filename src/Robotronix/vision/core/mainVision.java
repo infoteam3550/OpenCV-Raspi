@@ -69,7 +69,7 @@ public class mainVision {
 			
 			cmodule.setHSV(altWindow.getFromSliders(), altWindow.getToSliders());
 			cmodule.setContrast(altWindow.getExpoValue());
-			cmodule.setTargetMode(cmodule.DEBUG_TARGET);
+			cmodule.setTargetMode(cmodule.TARGET_CROCHET);
 			
 			if(willRequestImage)
 				cmodule.runTarget(true);
