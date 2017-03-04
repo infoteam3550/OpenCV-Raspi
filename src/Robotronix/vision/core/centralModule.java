@@ -344,13 +344,13 @@ public class centralModule {
 		List<Double> orientations = new ArrayList<Double>();
 //		//Dessiner les rectangles
 		
-		RotatedRect biggestRect;
-		int biggestArea = 0;
+		RotatedRect biggestRect = new RotatedRect();
+		double biggestArea = 0;
 		for (int i = 0; i < contours.size(); i++)
 		{
 //			//Trier les contours qui ont une bounding box
 			convexhulls.add(i, new MatOfInt(6));
-			int tempArea = Imgproc.contourArea(contours.get(i));
+			double tempArea = Imgproc.contourArea(contours.get(i));
 			if (tempArea > 2000)
 			{
 				Imgproc.convexHull(contours.get(i), convexhulls.get(i));
@@ -373,8 +373,8 @@ public class centralModule {
 				//System.out.println(contourSolidity);
 			}
 		}
-		m_TargetCenter_X = biggestRect.center.x;
-		m_TargetCenter_Y = biggestRect.center.y;
+		m_TargetCenter_X = (float)biggestRect.center.x;
+		m_TargetCenter_Y = (float)biggestRect.center.y;
 		//m_srcImage = m_hsvOverlay;
 		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
 		m_log.info(""+currentFPS);

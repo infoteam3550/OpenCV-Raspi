@@ -4,3 +4,7 @@
 
 *.log
 *.log.*
+
+#Git ignore binaries
+
+*.class
