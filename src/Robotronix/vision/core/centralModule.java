@@ -25,8 +25,8 @@ public class centralModule {
 	public static final int GEAR_TERRE = 3;
 	public static final int BALLE_TERRE = 4;
 	
-	public static final int CENTRE_IMAGE_X = 640;
-	public static final int CENTRE_IMAGE_Y = 360;
+	public static final float CENTRE_IMAGE_X = 640;
+	public static final float CENTRE_IMAGE_Y = 360;
 	// setup member variables
 	public int m_degree;
 	public int m_targetMode;
@@ -59,6 +59,8 @@ public class centralModule {
 	
 	public float m_TargetCenter_X;
 	public float m_TargetCenter_Y;
+	public float m_imageTargetCenter_X;
+	public float m_imageTargetCenter_Y;
 	//start of functions
 
 	public centralModule() {
@@ -375,6 +377,10 @@ public class centralModule {
 		}
 		m_TargetCenter_X = (float)biggestRect.center.x;
 		m_TargetCenter_Y = (float)biggestRect.center.y;
+		
+		m_imageTargetCenter_X = m_TargetCenter_X - CENTRE_IMAGE_X;
+		m_imageTargetCenter_Y = m_TargetCenter_Y - CENTRE_IMAGE_Y;
+		
 		//m_srcImage = m_hsvOverlay;
 		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
 		m_log.info(""+currentFPS);
