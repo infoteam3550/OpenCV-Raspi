@@ -19,7 +19,7 @@ import org.opencv.videoio.Videoio;
 public class centralModule {
 	//setup constants
 	public static final int DEBUG_TARGET = 0;
-	public static final int CROCHET_GEAR = 1;
+	public static final int TARGET_CROCHET = 1;
 	public static final int HIGH_GOAL = 2;
 	public static final int GEAR_TERRE = 3;
 	public static final int BALLE_TERRE = 4;
@@ -121,9 +121,9 @@ public class centralModule {
 				targetDebug();
 				break;
 			}
-			case (CROCHET_GEAR) : {
+			case (TARGET_CROCHET) : {
 				//TODO trouver le centre de deux blob vertical
-				crochetGear();
+				targetCrochet();
 				break;
 			}
 			case (HIGH_GOAL): {
@@ -278,10 +278,83 @@ public class centralModule {
 		return currentFPS;
 	}
 
-	public void crochetGear() {
-		m_log.fine("[runTarget] crochetGear started");
+	public void targetCrochet() {
+//This function is ran at every single frame, which means that it floods the log.
+		//m_logger.info("[runTarget] targetDebug started");
+
+		m_time = System.nanoTime();
+		m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
+		m_camera.read(m_srcImage);
+		//Utiliser une image disque pour le debogage
+		//m_srcImage = Imgcodecs.imread("/home/sysgen/image.JPG");
+		//Imgproc.blur(srcImage, srcImage, new Size(3, 3));
+		
+		/*
+		 *  Convertis une image de BGR de la camera a HSV
+		 *  
+		 *  Raison: HSV permet de choisir une certaine couleur de cible
+		 */
+		Imgproc.cvtColor(m_srcImage, m_hsvImage, Imgproc.COLOR_BGR2HSV);
+		
+		/*
+		 * Permet de faire le choix de l'intervale de couleur
+		 * 
+		 * Param1 = source, Param2 = 3 valeur minimum HSV, Param3 = 3 valeur maximum HSV, Param 4 = destination
+		 *
+		 */
+		Core.inRange(m_hsvImage, m_minHSV , m_maxHSV, m_hsvOverlay); // Valeur pour le tape
+
+		//Core.multiply(m_hsvOverlay, new Scalar(0.75, 0.75, 0.75), m_hsvOverlay);
+		//Core.multiply(m_hsvOverlay, new Scalar(0.3, 1, 1), m_hsvOverlay);
+
+		//Nous allons utiliser le maintenant inutile hsvImage comme Mat de swap...
+		Imgproc.cvtColor(m_hsvOverlay, m_hsvImage, Imgproc.COLOR_GRAY2BGR);
+		
+		
+		/*
+		 * findContour va trouver les contours des objets de l'image
+		 * 
+		 */
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+		Imgproc.findContours(m_hsvOverlay, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
+
+		//Core.multiply(srcImage, new Scalar(0,0,0), srcImage);
+
+		//Appliquer le masque...
+
+		//Imgproc.cvtColor(m_hsvOverlay, m_hsvOverlay, Imgproc.COLOR_GRAY2BGR);
+		//Core.bitwise_and(srcImage, m_hsvOverlay, srcImage);
+
+		List<MatOfInt> convexhulls = new ArrayList<MatOfInt>(contours.size());
+		List<Double> orientations = new ArrayList<Double>();
+//		//Dessiner les rectangles
+		for (int i = 0; i < contours.size(); i++)
+		{
+//			//Trier les contours qui ont une bounding box
+			convexhulls.add(i, new MatOfInt(6));
+			if (Imgproc.contourArea(contours.get(i)) > 2000)
+			{
+				Imgproc.convexHull(contours.get(i), convexhulls.get(i));
+				//double contourSolidity = Imgproc.contourArea(contours.get(i))/Imgproc.contourArea(convexhulls.get(i));
+				Imgproc.drawContours(m_srcImage, contours, i, new Scalar(255, 255, 255), -1);
+				MatOfPoint2f points = new MatOfPoint2f(contours.get(i).toArray());
+				RotatedRect rRect = Imgproc.minAreaRect(points);
+
+				Point[] vertices = new Point[4];
+				rRect.points(vertices);
+				for (int j = 0; j < 4; j++) //Dessiner un rectangle avec rotation..
+				{
+					Imgproc.line(m_srcImage, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0), 10);
+				}
+				orientations.add(3.0);
+				//System.out.println(contourSolidity);
+			}
+		}
+		//m_srcImage = m_hsvOverlay;
+		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
+		m_log.info(""+currentFPS);
 		//this is a test code
-		m_degree = 20;
+		m_degree = 10;
 	}
 
 	public void highGoal() {
