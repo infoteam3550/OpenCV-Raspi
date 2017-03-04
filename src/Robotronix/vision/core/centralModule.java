@@ -52,6 +52,9 @@ public class centralModule {
 	double m_timeSinceLastUpdate;
 
 	public int cameraPort = 0;
+	
+	public float m_TargetCenter_X;
+	public float m_TargetCenter_Y;
 	//start of functions
 
 	public centralModule() {
@@ -331,31 +334,38 @@ public class centralModule {
 		List<MatOfInt> convexhulls = new ArrayList<MatOfInt>(contours.size());
 		List<Double> orientations = new ArrayList<Double>();
 //		//Dessiner les rectangles
+		
+		RotatedRect biggestRect;
+		int biggestArea = 0;
 		for (int i = 0; i < contours.size(); i++)
 		{
 //			//Trier les contours qui ont une bounding box
 			convexhulls.add(i, new MatOfInt(6));
-			if (Imgproc.contourArea(contours.get(i)) > 2000)
+			int tempArea = Imgproc.contourArea(contours.get(i));
+			if (tempArea > 2000)
 			{
 				Imgproc.convexHull(contours.get(i), convexhulls.get(i));
 				//double contourSolidity = Imgproc.contourArea(contours.get(i))/Imgproc.contourArea(convexhulls.get(i));
 				Imgproc.drawContours(m_srcImage, contours, i, new Scalar(255, 255, 255), -1);
 				MatOfPoint2f points = new MatOfPoint2f(contours.get(i).toArray());
 				RotatedRect rRect = Imgproc.minAreaRect(points);
-
+				if (tempArea > biggestArea)
+				{
+					biggestRect = rRect;
+					biggestArea = tempArea;
+				}
 				Point[] vertices = new Point[4];
-				rRect.points(vertices);
-				int[] Xtotal;
-				int[] Ytotal;
+				rRect.points(vertices);			
 				for (int j = 0; j < 4; j++) //Dessiner un rectangle avec rotation..
 				{
 					Imgproc.line(m_srcImage, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0), 10);
-					Xtotal[j] = vertices[j];
 				}
 				
 				//System.out.println(contourSolidity);
 			}
 		}
+		m_TargetCenter_X = biggestRect.center.x;
+		m_TargetCenter_Y = biggestRect.center.y;
 		//m_srcImage = m_hsvOverlay;
 		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
 		m_log.info(""+currentFPS);
