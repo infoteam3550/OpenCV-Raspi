@@ -1,1 +1,6 @@
 /bin/
+
+#Git ignore all log files
+
+*.log
+*.log.*
