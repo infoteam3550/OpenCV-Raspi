@@ -23,6 +23,9 @@ public class centralModule {
 	public static final int HIGH_GOAL = 2;
 	public static final int GEAR_TERRE = 3;
 	public static final int BALLE_TERRE = 4;
+	
+	public static final int CENTRE_IMAGE_X = 640;
+	public static final int CENTRE_IMAGE_Y = 360;
 	// setup member variables
 	public int m_degree;
 	public int m_targetMode;
@@ -342,11 +345,14 @@ public class centralModule {
 
 				Point[] vertices = new Point[4];
 				rRect.points(vertices);
+				int[] Xtotal;
+				int[] Ytotal;
 				for (int j = 0; j < 4; j++) //Dessiner un rectangle avec rotation..
 				{
 					Imgproc.line(m_srcImage, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0), 10);
+					Xtotal[j] = vertices[j];
 				}
-				orientations.add(3.0);
+				
 				//System.out.println(contourSolidity);
 			}
 		}
