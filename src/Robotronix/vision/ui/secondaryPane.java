@@ -19,6 +19,8 @@ public class secondaryPane {
     private JLabel hueTo;
     private JLabel saturationTo;
     private JLabel valueTo;
+    private JLabel angleValue;
+    private JLabel distanceValue;
     private JSlider expostionSlider;
     private JCheckBox activerControleCheckBox;
     private JRadioButton mode1RadioButton;
@@ -52,6 +54,10 @@ public class secondaryPane {
 
     public double getExpositionValue() {
         return expostionSlider.getValue();
+    }
+
+    public void setAngle(double i){
+        angleValue.setText("Angle : " + i);
     }
 
     public int getMode() {
@@ -213,6 +219,13 @@ public class secondaryPane {
         gbc.gridy = 10;
         gbc.anchor = GridBagConstraints.WEST;
         panel1.add(mode2RadioButton, gbc);
+        angleValue = new JLabel();
+        angleValue.setText("Angle : ");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 12;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        panel1.add(angleValue, gbc);
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(mode1RadioButton);

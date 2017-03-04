@@ -1,6 +1,7 @@
 package Robotronix.vision.core;
 
 import java.io.IOException;
+import java.io.File;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,9 @@ public class centralModule {
 	Mat m_hsvOverlay;
 	double m_timeSinceLastUpdate;
 
+	public double m_targetAngle = 35;
+	public Scalar m_targetPosition = new Scalar(0, 0);
+
 	public int cameraPort = 0;
 	//start of functions
 
@@ -69,11 +73,17 @@ public class centralModule {
 		createLog();
 
 		//OpenCV initialisation
+		cameraPort = 0;
 		for(int device = 0; device<10; device++)
 		{
 			VideoCapture tempCam = new VideoCapture();
-			if (tempCam.isOpened())
+			tempCam.open(device);
+			if (tempCam.isOpened()){
+				m_log.info("Camera is on port "+device);
 				cameraPort = device;
+				break;
+			}
+			m_log.info("Camera not on port "+device);
 		}
 
 		m_camera = new VideoCapture(cameraPort);
@@ -263,7 +273,6 @@ public class centralModule {
 				{
 					Imgproc.line(m_srcImage, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0), 10);
 				}
-				orientations.add(3.0);
 				//System.out.println(contourSolidity);
 			}
 		}
@@ -271,7 +280,7 @@ public class centralModule {
 		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
 		m_log.info(""+currentFPS);
 		//this is a test code
-		m_degree = 10;
+		m_targetAngle = 35;
 	}
 
 	public float getFPS(){

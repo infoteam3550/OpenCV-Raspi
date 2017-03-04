@@ -35,7 +35,9 @@ public class mainVision {
 		cmodule.setHSV(minH, minS, minV, maxH, maxS, maxV); //set value from prefs
 		
 		secondaryWindow altWindow = new secondaryWindow();
-		Mat image = Imgcodecs.imread("/home/pi/image.JPG");
+		Mat image = new Mat();
+		//image = Imgcodecs.imread("/home/pi/image.JPG");
+		cmodule.m_camera.read(image);
 		if(image.height() == 0){
 			System.out.println("Image load fail");
 		}
@@ -74,7 +76,7 @@ public class mainVision {
 			
 			image = cmodule.getSrcImage();
 			window.update(image);
-			
+			altWindow.setAngle(cmodule.m_targetAngle);
 			window.setFPSRate((int)(cmodule.getFPS()));
 		}
 

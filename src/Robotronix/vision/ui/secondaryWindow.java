@@ -43,6 +43,10 @@ public class secondaryWindow extends JFrame
     public double getExpoValue(){
         return m_Pane.getExpositionValue();
     }
+
+    public void setAngle(double angle){
+        m_Pane.setAngle(angle);
+    }
     
     public int getMode(){
         return m_Pane.getMode();
