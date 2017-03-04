@@ -76,7 +76,7 @@ public class mainVision {
 			
 			image = cmodule.getSrcImage();
 			window.update(image);
-			altWindow.setAngle(cmodule.m_targetAngle);
+			altWindow.setAngle(cmodule.m_degree);
 			window.setFPSRate((int)(cmodule.getFPS()));
 		}
 

@@ -109,6 +109,8 @@ public class centralModule {
 			m_log.info("Camera OK!");
 		}
 		m_camera.set(Videoio.CAP_PROP_FRAME_COUNT, 30);
+		//m_camera.set(Videoio.CV_CAP_PROP_FRAME_WIDTH, IMAGE_WIDTH);
+		//m_camera.set(Videoio.CV_CAP_PROP_FRAME_HEIGHT, IMAGE_HEIGHT);
 
 		m_srcImage = new Mat();
 		m_camera.read(m_srcImage);
@@ -386,10 +388,10 @@ public class centralModule {
 		//Draw crosshair
 		Imgproc.line(m_srcImage, new Point(m_TargetCenter_X, m_TargetCenter_Y - 50), new Point(m_TargetCenter_X, m_TargetCenter_Y + 50), new Scalar(255,0,0), 2);
 		Imgproc.line(m_srcImage, new Point(m_TargetCenter_X - 50, m_TargetCenter_Y), new Point(m_TargetCenter_X+50, m_TargetCenter_Y), new Scalar(255,0,0), 2);
-		m_imageTargetCenter_X = m_TargetCenter_X - CENTRE_IMAGE_X;
-		m_imageTargetCenter_Y = m_TargetCenter_Y - CENTRE_IMAGE_Y;
+		m_imageTargetCenter_X = m_TargetCenter_X - (m_srcImage.width()/2);
+		m_imageTargetCenter_Y = m_TargetCenter_Y - (m_srcImage.height()/2);
 		
-		m_degree = Math.atan(m_imageTargetCenter_X*CONV_PIXEL2CM/FOV_LENGHT);
+		m_degree = Math.atan((m_imageTargetCenter_X*CONV_PIXEL2CM)/FOV_LENGHT)*2;
 		m_degree = Math.toDegrees(m_degree);
 		
 		m_TargetCenter_X = (float)biggestRect.center.x;
