@@ -139,7 +139,9 @@ public class centralModule {
 	public void runTarget(boolean liveMode)
 	{
 		if (liveMode) m_targetStop = true;
-
+		
+		m_time = System.nanoTime();
+		
 		switch (m_targetMode) {
 			case (DEBUG_TARGET) : {
 				//TODO	Montre l'image et mets le masque HSV
@@ -170,6 +172,9 @@ public class centralModule {
 				m_log.severe("[runTarget] invalid target mode, change with ''changeTargetMode''");
 			}
 		}
+		
+		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
+		//m_log.info("FPS = "+currentFPS);
 
 	}
 
@@ -224,8 +229,7 @@ public class centralModule {
 		//This function is ran at every single frame, which means that it floods the log.
 		//m_logger.info("[runTarget] targetDebug started");
 
-		m_time = System.nanoTime();
-		m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
+		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_exposition);
 		m_camera.read(m_srcImage);
 		//Utiliser une image disque pour le debogage
 		//m_srcImage = Imgcodecs.imread("/home/sysgen/image.JPG");
@@ -292,10 +296,8 @@ public class centralModule {
 			}
 		}
 		//m_srcImage = m_hsvOverlay;
-		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
-		m_log.info(""+currentFPS);
 		//this is a test code
-		m_targetAngle = 35;
+		m_targetAngle = 0;
 	}
 
 	public float getFPS(){
@@ -306,8 +308,10 @@ public class centralModule {
 //This function is ran at every single frame, which means that it floods the log.
 		//m_logger.info("[runTarget] targetDebug started");
 
-		m_time = System.nanoTime();
-		m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
+		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_exposition);
+		m_camera.set(Videoio.CAP_PROP_BRIGHTNESS, 00);
+		m_camera.set(Videoio.CAP_PROP_BRIGHTNESS, 1);
+		//m_camera.set(Videoio.CAP_PROP_CONTRAST, 50);
 		m_camera.read(m_srcImage);
 		//Utiliser une image disque pour le debogage
 		//m_srcImage = Imgcodecs.imread("/home/sysgen/image.JPG");
@@ -342,7 +346,7 @@ public class centralModule {
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		Imgproc.findContours(m_hsvOverlay, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
-		//Core.multiply(srcImage, new Scalar(0,0,0), srcImage);
+		//Core.multiply(srcImage, new ScacurrentFPSlar(0,0,0), srcImage);
 
 		//Appliquer le masque...
 
@@ -399,9 +403,6 @@ public class centralModule {
 		m_TargetCenter_X = (float)biggestRect.center.x;
 		m_TargetCenter_Y = (float)biggestRect.center.y;
 		//m_srcImage = m_hsvOverlay;
-		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
-		m_log.info(""+currentFPS);
-		//this is a test code
 	}
 
 	public void highGoal() {

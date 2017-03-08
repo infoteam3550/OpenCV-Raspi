@@ -37,6 +37,8 @@ public class secondaryPane {
     }
     
     public void setFromSliderValues(Scalar minValues) {
+    	
+    	
     	hue1Slider.setValue((int)(minValues.val[0]));
     	saturation1Slider.setValue((int)(minValues.val[1]));
     	value1Slider.setValue((int)(minValues.val[2]));

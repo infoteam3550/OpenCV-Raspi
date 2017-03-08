@@ -32,6 +32,13 @@ public class mainVision {
 		
 		centralModule cmodule = new centralModule();
 		
+		cmodule.m_log.info("Loaded prefs MinH = "  + (int)minH +
+                " MinS = " + (int)minS +
+                " MinV = " + (int)minV +
+                " MaxH = " + (int)maxH +
+                " MaxS = " + (int)maxS +
+                " MaxV = " + (int)maxV);
+		
 		cmodule.setHSV(minH, minS, minV, maxH, maxS, maxV); //set value from prefs
 		
 		secondaryWindow altWindow = new secondaryWindow();
@@ -63,12 +70,26 @@ public class mainVision {
 
 		
 		willRequestImage = false;
+		
+		
 		while(true)
 		{
 			if(window.isLive() | window.getUpdateStatus()) willRequestImage = true;
 			
 			cmodule.setHSV(altWindow.getFromSliders(), altWindow.getToSliders());
-			cmodule.setContrast(altWindow.getExpoValue());
+			Scalar minsHSV = cmodule.getMinHSV();
+			Scalar maxsHSV = cmodule.getMaxHSV();
+			//Scalar minsHSV = new Scalar	(minH, minS, minV);
+			//Scalar maxsHSV = new Scalar(maxH, maxS, maxV);
+			//cmodule.setHSV(minsHSV, maxsHSV);altWindow.getToSliders()
+			
+			cmodule.m_log.info("MinH = "  + (int)minsHSV.val[0] +
+							   " MinS = " + (int)minsHSV.val[1] +
+							   " MinV = " + (int)minsHSV.val[2] +
+							   " MaxH = " + (int)maxsHSV.val[0] +
+							   " MaxS = " + (int)maxsHSV.val[1] +
+							   " MaxV = " + (int)maxsHSV.val[2]);
+			cmodule.setExposure(altWindow.getExpoValue());
 			cmodule.setTargetMode(cmodule.TARGET_CROCHET);
 			
 			if(willRequestImage)
