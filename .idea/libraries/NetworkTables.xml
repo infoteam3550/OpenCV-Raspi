@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="NetworkTables">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/wpilib/java/current/lib/NetworkTables.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

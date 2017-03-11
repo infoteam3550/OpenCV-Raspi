@@ -1,5 +1,6 @@
 package Robotronix.vision.core;
 import Robotronix.vision.ui.*;
+import Robotronix.vision.networking.*;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.*;
 
@@ -16,6 +17,8 @@ public class mainVision {
 		
 		preferencesAPI prefs = new preferencesAPI();
 		
+		ntClient rrCom = new ntClient();
+		
 		///Prefs key initisation
 		int minH = Integer.parseInt(prefs.initKey("minH", "80"));
 		int minS = Integer.parseInt(prefs.initKey("minS", "100"));
@@ -31,6 +34,13 @@ public class mainVision {
 		
 		
 		centralModule cmodule = new centralModule();
+		
+		cmodule.m_log.info("Loaded prefs MinH = "  + (int)minH +
+                " MinS = " + (int)minS +
+                " MinV = " + (int)minV +
+                " MaxH = " + (int)maxH +
+                " MaxS = " + (int)maxS +
+                " MaxV = " + (int)maxV);
 		
 		cmodule.setHSV(minH, minS, minV, maxH, maxS, maxV); //set value from prefs
 		
@@ -63,20 +73,36 @@ public class mainVision {
 
 		
 		willRequestImage = false;
+		
+		
 		while(true)
 		{
 			if(window.isLive() | window.getUpdateStatus()) willRequestImage = true;
 			
 			cmodule.setHSV(altWindow.getFromSliders(), altWindow.getToSliders());
-			cmodule.setContrast(altWindow.getExpoValue());
-			cmodule.setTargetMode(cmodule.DEBUG_TARGET);
+			Scalar minsHSV = cmodule.getMinHSV();
+			Scalar maxsHSV = cmodule.getMaxHSV();
+			//Scalar minsHSV = new Scalar	(minH, minS, minV);
+			//Scalar maxsHSV = new Scalar(maxH, maxS, maxV);
+			//cmodule.setHSV(minsHSV, maxsHSV);altWindow.getToSliders()
+			
+			cmodule.m_log.info("MinH = "  + (int)minsHSV.val[0] +
+							   " MinS = " + (int)minsHSV.val[1] +
+							   " MinV = " + (int)minsHSV.val[2] +
+							   " MaxH = " + (int)maxsHSV.val[0] +
+							   " MaxS = " + (int)maxsHSV.val[1] +
+							   " MaxV = " + (int)maxsHSV.val[2]);
+			cmodule.setExposure(altWindow.getExpoValue());
+			cmodule.setTargetMode(cmodule.TARGET_CROCHET);
 			
 			if(willRequestImage)
 				cmodule.runTarget(true);
 			
 			image = cmodule.getSrcImage();
 			window.update(image);
-			altWindow.setAngle(cmodule.m_targetAngle);
+			altWindow.setAngle(cmodule.m_degree);
+			rrCom.setAngle(cmodule.m_degree, 0.0D);
+			System.out.println(rrCom.getAngle()[0]);
 			window.setFPSRate((int)(cmodule.getFPS()));
 		}
 

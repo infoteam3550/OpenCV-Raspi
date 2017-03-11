@@ -6,6 +6,11 @@
       <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
     </src_description>
   </component>
+  <component name="FacetManager">
+    <facet type="FRC_FACET" name="FRC">
+      <configuration />
+    </facet>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
@@ -26,6 +31,23 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="opencv-320" level="project" />
+    <orderEntry type="library" exported="" name="opencv-320" level="project" />
+    <orderEntry type="library" exported="" name="NetworkTables" level="project" />
+    <orderEntry type="module-library">
+      <library name="WPILib Libraries">
+        <CLASSES>
+          <root url="file://$USER_HOME$/wpilib/java/current/lib" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="file://$USER_HOME$/wpilib/java/current/lib" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="file://$USER_HOME$/wpilib/java/current/lib" />
+        </SOURCES>
+        <jarDirectory url="file://$USER_HOME$/wpilib/java/current/lib" recursive="true" />
+        <jarDirectory url="file://$USER_HOME$/wpilib/java/current/lib" recursive="true" type="JAVADOC" />
+        <jarDirectory url="file://$USER_HOME$/wpilib/java/current/lib" recursive="true" type="SOURCES" />
+      </library>
+    </orderEntry>
   </component>
 </module>
