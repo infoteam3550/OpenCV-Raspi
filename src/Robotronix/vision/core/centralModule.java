@@ -25,10 +25,15 @@ public class centralModule {
 	public static final int GEAR_TERRE = 3;
 	public static final int BALLE_TERRE = 4;
 	
-	public static final int CENTRE_IMAGE_X = 640;
-	public static final int CENTRE_IMAGE_Y = 360;
+	public static final float CENTRE_IMAGE_X = 640;
+	public static final float CENTRE_IMAGE_Y = 360;
+	public static final double IMAGE_WIDTH = 1280.0;
+	public static final double IMAGE_HEIGHT = 720.0;
+	public static final double FOV_WIDTH = 376.0;
+	public static final double CONV_PIXEL2CM = FOV_WIDTH / IMAGE_WIDTH;
+	public static final double FOV_LENGHT = 298;
 	// setup member variables
-	public int m_degree;
+	public double m_degree;
 	public int m_targetMode;
 	public boolean m_targetStop;
 
@@ -59,6 +64,8 @@ public class centralModule {
 	
 	public float m_TargetCenter_X;
 	public float m_TargetCenter_Y;
+	public float m_imageTargetCenter_X;
+	public float m_imageTargetCenter_Y;
 	//start of functions
 
 	public centralModule() {
@@ -102,6 +109,8 @@ public class centralModule {
 			m_log.info("Camera OK!");
 		}
 		m_camera.set(Videoio.CAP_PROP_FRAME_COUNT, 30);
+		//m_camera.set(Videoio.CV_CAP_PROP_FRAME_WIDTH, IMAGE_WIDTH);
+		//m_camera.set(Videoio.CV_CAP_PROP_FRAME_HEIGHT, IMAGE_HEIGHT);
 
 		m_srcImage = new Mat();
 		m_camera.read(m_srcImage);
@@ -130,7 +139,9 @@ public class centralModule {
 	public void runTarget(boolean liveMode)
 	{
 		if (liveMode) m_targetStop = true;
-
+		
+		m_time = System.nanoTime();
+		
 		switch (m_targetMode) {
 			case (DEBUG_TARGET) : {
 				//TODO	Montre l'image et mets le masque HSV
@@ -161,6 +172,9 @@ public class centralModule {
 				m_log.severe("[runTarget] invalid target mode, change with ''changeTargetMode''");
 			}
 		}
+		
+		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
+		//m_log.info("FPS = "+currentFPS);
 
 	}
 
@@ -168,7 +182,7 @@ public class centralModule {
 		m_targetStop = false;
 	}
 
-	public int getTargetResult() {
+	public double getTargetResult() {
 		return m_degree;
 	}
 
@@ -215,8 +229,7 @@ public class centralModule {
 		//This function is ran at every single frame, which means that it floods the log.
 		//m_logger.info("[runTarget] targetDebug started");
 
-		m_time = System.nanoTime();
-		m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
+		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_exposition);
 		m_camera.read(m_srcImage);
 		//Utiliser une image disque pour le debogage
 		//m_srcImage = Imgcodecs.imread("/home/sysgen/image.JPG");
@@ -283,10 +296,8 @@ public class centralModule {
 			}
 		}
 		//m_srcImage = m_hsvOverlay;
-		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
-		m_log.info(""+currentFPS);
 		//this is a test code
-		m_targetAngle = 35;
+		m_targetAngle = 0;
 	}
 
 	public float getFPS(){
@@ -297,8 +308,10 @@ public class centralModule {
 //This function is ran at every single frame, which means that it floods the log.
 		//m_logger.info("[runTarget] targetDebug started");
 
-		m_time = System.nanoTime();
-		m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_contraste);
+		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_exposition);
+		m_camera.set(Videoio.CAP_PROP_BRIGHTNESS, 00);
+		m_camera.set(Videoio.CAP_PROP_BRIGHTNESS, 1);
+		//m_camera.set(Videoio.CAP_PROP_CONTRAST, 50);
 		m_camera.read(m_srcImage);
 		//Utiliser une image disque pour le debogage
 		//m_srcImage = Imgcodecs.imread("/home/sysgen/image.JPG");
@@ -333,7 +346,7 @@ public class centralModule {
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 		Imgproc.findContours(m_hsvOverlay, contours, new Mat(), Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_SIMPLE);
 
-		//Core.multiply(srcImage, new Scalar(0,0,0), srcImage);
+		//Core.multiply(srcImage, new ScacurrentFPSlar(0,0,0), srcImage);
 
 		//Appliquer le masque...
 
@@ -375,11 +388,21 @@ public class centralModule {
 		}
 		m_TargetCenter_X = (float)biggestRect.center.x;
 		m_TargetCenter_Y = (float)biggestRect.center.y;
+		
+		//Draw crosshair
+		Imgproc.line(m_srcImage, new Point(m_TargetCenter_X, m_TargetCenter_Y - 50), new Point(m_TargetCenter_X, m_TargetCenter_Y + 50), new Scalar(255,0,0), 2);
+		Imgproc.line(m_srcImage, new Point(m_TargetCenter_X - 50, m_TargetCenter_Y), new Point(m_TargetCenter_X+50, m_TargetCenter_Y), new Scalar(255,0,0), 2);
+		m_imageTargetCenter_X = m_TargetCenter_X - (m_srcImage.width()/2);
+		m_imageTargetCenter_Y = m_TargetCenter_Y - (m_srcImage.height()/2);
+		
+		m_degree = Math.atan((m_imageTargetCenter_X*CONV_PIXEL2CM)/FOV_LENGHT)*2;
+		m_degree = Math.toDegrees(m_degree);
+		
+		m_TargetCenter_X = (float)biggestRect.center.x;
+		m_TargetCenter_Y = (float)biggestRect.center.y;
+		m_TargetCenter_X = (float)biggestRect.center.x;
+		m_TargetCenter_Y = (float)biggestRect.center.y;
 		//m_srcImage = m_hsvOverlay;
-		currentFPS = (float)(1 / ((System.nanoTime() - m_time)/1000000000));
-		m_log.info(""+currentFPS);
-		//this is a test code
-		m_degree = 10;
 	}
 
 	public void highGoal() {

@@ -37,6 +37,8 @@ public class secondaryPane {
     }
     
     public void setFromSliderValues(Scalar minValues) {
+    	
+    	
     	hue1Slider.setValue((int)(minValues.val[0]));
     	saturation1Slider.setValue((int)(minValues.val[1]));
     	value1Slider.setValue((int)(minValues.val[2]));
@@ -78,7 +80,7 @@ public class secondaryPane {
     public void $$$setupUI$$$() {
         panel1 = new JPanel();
         panel1.setLayout(new GridBagLayout());
-        hue1Slider = new JSlider();
+        hue1Slider = new JSlider(0, 180);
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -87,7 +89,7 @@ public class secondaryPane {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(hue1Slider, gbc);
-        saturation1Slider = new JSlider();
+        saturation1Slider = new JSlider(0, 255);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 3;
@@ -95,7 +97,7 @@ public class secondaryPane {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(saturation1Slider, gbc);
-        value1Slider = new JSlider();
+        value1Slider = new JSlider(0, 255);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 4;
@@ -103,7 +105,7 @@ public class secondaryPane {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(value1Slider, gbc);
-        hue2Slider = new JSlider();
+        hue2Slider = new JSlider(0, 180);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;
@@ -111,7 +113,7 @@ public class secondaryPane {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(hue2Slider, gbc);
-        saturation2Slider = new JSlider();
+        saturation2Slider = new JSlider(0, 255);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 6;
@@ -119,7 +121,7 @@ public class secondaryPane {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel1.add(saturation2Slider, gbc);
-        value2Slider = new JSlider();
+        value2Slider = new JSlider(0, 255);
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 7;
