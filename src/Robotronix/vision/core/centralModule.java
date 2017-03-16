@@ -86,6 +86,7 @@ public class centralModule {
 		createLog();
 
 		//OpenCV initialisation
+
 		cameraPort = 0;
 		for(int device = 0; device<10; device++)
 		{
@@ -115,6 +116,8 @@ public class centralModule {
 		m_srcImage = new Mat();
 		m_camera.read(m_srcImage);
 
+
+		m_srcImage = Imgcodecs.imread("/images/frc2017/1.jpg");
 		m_hsvImage = Mat.zeros(m_srcImage.size(), 0);
 
 		m_hsvOverlay = new Mat(3,3,0);
@@ -231,6 +234,7 @@ public class centralModule {
 
 		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_exposition);
 		m_camera.read(m_srcImage);
+		//m_srcImage = Imgcodecs.imread("images/frc2017/1.jpg");
 		//Utiliser une image disque pour le debogage
 		//m_srcImage = Imgcodecs.imread("/home/sysgen/image.JPG");
 		//Imgproc.blur(srcImage, srcImage, new Size(3, 3));
@@ -278,7 +282,7 @@ public class centralModule {
 		{
 //			//Trier les contours qui ont une bounding box
 			convexhulls.add(i, new MatOfInt(6));
-			if (Imgproc.contourArea(contours.get(i)) > 2000)
+			if (Imgproc.contourArea(contours.get(i)) > 1000)
 			{
 				Imgproc.convexHull(contours.get(i), convexhulls.get(i));
 				//double contourSolidity = Imgproc.contourArea(contours.get(i))/Imgproc.contourArea(convexhulls.get(i));
@@ -309,12 +313,12 @@ public class centralModule {
 		//m_logger.info("[runTarget] targetDebug started");
 
 		//m_camera.set(Videoio.CAP_PROP_EXPOSURE, m_exposition);
-		m_camera.set(Videoio.CAP_PROP_BRIGHTNESS, 00);
-		m_camera.set(Videoio.CAP_PROP_BRIGHTNESS, 1);
+		//m_camera.set(Videoio.CAP_PROP_BRIGHTNESS, 00);
+		//m_camera.set(Videoio.CAP_PROP_BRIGHTNESS, 1);
 		//m_camera.set(Videoio.CAP_PROP_CONTRAST, 50);
 		m_camera.read(m_srcImage);
 		//Utiliser une image disque pour le debogage
-		//m_srcImage = Imgcodecs.imread("/home/sysgen/image.JPG");
+		//m_srcImage = Imgcodecs.imread("/images/frc2017/1.jpg");
 		//Imgproc.blur(srcImage, srcImage, new Size(3, 3));
 		
 		/*
@@ -356,15 +360,16 @@ public class centralModule {
 		List<MatOfInt> convexhulls = new ArrayList<MatOfInt>(contours.size());
 		List<Double> orientations = new ArrayList<Double>();
 //		//Dessiner les rectangles
-		
+		List<RotatedRect> selectedRect = new ArrayList<>();
 		RotatedRect biggestRect = new RotatedRect();
 		double biggestArea = 0;
+		Point crochetPos = new Point();
 		for (int i = 0; i < contours.size(); i++)
 		{
 //			//Trier les contours qui ont une bounding box
 			convexhulls.add(i, new MatOfInt(6));
 			double tempArea = Imgproc.contourArea(contours.get(i));
-			if (tempArea > 2000)
+			if (tempArea > 100)
 			{
 				Imgproc.convexHull(contours.get(i), convexhulls.get(i));
 				//double contourSolidity = Imgproc.contourArea(contours.get(i))/Imgproc.contourArea(convexhulls.get(i));
@@ -376,6 +381,7 @@ public class centralModule {
 					biggestRect = rRect;
 					biggestArea = tempArea;
 				}
+				selectedRect.add(rRect);
 				Point[] vertices = new Point[4];
 				rRect.points(vertices);			
 				for (int j = 0; j < 4; j++) //Dessiner un rectangle avec rotation..
@@ -386,8 +392,42 @@ public class centralModule {
 				//System.out.println(contourSolidity);
 			}
 		}
+		Point center = new Point();
+		double divider = 0;
+		if (selectedRect.size() != 0) {
+			double averageRotationAngle = 0;
+			for (int i = 0; i < selectedRect.size(); i++) {
+				//Get the average rotation angle of every rectangle
+				averageRotationAngle += selectedRect.get(i).angle;
+			}
+			//Now that we have the average angle, we need to see which rectangles are within range
+			for (int i = 0; i < selectedRect.size(); i++) {
+				//Get the average rotation angle of every rectangle
+				if (selectedRect.get(i).angle + 35 >= averageRotationAngle &&
+						selectedRect.get(i).angle - 35 <= averageRotationAngle) {
+					//This means that the rectangle is within bounds
+				} else {
+					selectedRect.remove(i);
+				}
+			}
+			//Now, we calculate the center of the collection
+				for (int i = 0; i < selectedRect.size(); i++) {
+					//Get the average rotation angle of every rectangle
+					divider += selectedRect.get(i).size.area();
+					center.x += selectedRect.get(i).center.x * selectedRect.get(i).size.area();
+					center.y += selectedRect.get(i).center.y * selectedRect.get(i).size.area();
+				}
+		}
+		if (divider == 0)
+			divider = 1;
+		center.x /= divider;
+		center.y /= divider;
+		/*
 		m_TargetCenter_X = (float)biggestRect.center.x;
 		m_TargetCenter_Y = (float)biggestRect.center.y;
+		*/
+		m_TargetCenter_X = (float)center.x;
+		m_TargetCenter_Y = (float)center.y;
 		
 		//Draw crosshair
 		Imgproc.line(m_srcImage, new Point(m_TargetCenter_X, m_TargetCenter_Y - 50), new Point(m_TargetCenter_X, m_TargetCenter_Y + 50), new Scalar(255,0,0), 2);

@@ -46,7 +46,7 @@ public class mainVision {
 		
 		secondaryWindow altWindow = new secondaryWindow();
 		Mat image = new Mat();
-		//image = Imgcodecs.imread("/home/pi/image.JPG");
+		//image = Imgcodecs.imread("/images/frc2017/1.jpg");
 		cmodule.m_camera.read(image);
 		if(image.height() == 0){
 			System.out.println("Image load fail");
